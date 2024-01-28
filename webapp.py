@@ -76,11 +76,11 @@ st.title("Body Language Detection for Online Learning")
 st.subheader("This is the student interface.", divider='grey')
 st.write("This is what will appear on a student's screen in full deployment.")
 
-toggle = Toggle()
+#toggle = Toggle()
 def callback(frame):
     img = frame.to_ndarray(format="bgr24")
     student = Student()
-    teacher = Teacher()
+    #teacher = Teacher()
     #if toggle.is_on():  
     with mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=0.5) as holistic:
         img = cv2.cvtColor(img,cv2.COLOR_BGR2RGB)
