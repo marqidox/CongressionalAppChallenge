@@ -2,7 +2,7 @@ streamlit
 altair
 cryptography
 mediapipe
-opencv-python-headless
+opencv-python-headless==4.9.0.80
 scikit-learn
 streamlit_webrtc
-opencv-contrib-python
+opencv-contrib-python==4.9.0.80
