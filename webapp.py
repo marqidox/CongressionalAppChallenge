@@ -6,7 +6,6 @@ import streamlit as st
 from streamlit_webrtc import webrtc_streamer
 import pickle
 import numpy as np
-import sklearn
 
 mp_drawing = mp.solutions.drawing_utils # Draw the detections from the model to the screen
 mp_holistic = mp.solutions.holistic # Mediapipe Solutions holistic model
