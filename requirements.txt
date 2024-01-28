@@ -3,6 +3,5 @@ pandas
 numpy
 mediapipe
 streamlit_webrtc
-pickle
 opencv-python-headless
 av
