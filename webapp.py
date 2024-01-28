@@ -35,7 +35,7 @@ class Student:
             return "Raise your hand to ask the teacher a question."
         if self.detected_emotion == 'sad':
             return "Talk to someone to process your emotions."
-
+'''
 class Teacher:
     def __init__(self):
         self.data = []
@@ -71,7 +71,7 @@ class Toggle:
             return True
         else:
             return False
-
+'''
 st.title("Body Language Detection for Online Learning")
 st.subheader("This is the student interface.", divider='grey')
 st.write("This is what will appear on a student's screen in full deployment.")
