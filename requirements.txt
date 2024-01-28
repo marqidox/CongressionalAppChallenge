@@ -5,5 +5,5 @@ numpy
 mediapipe
 scikit-learn
 streamlit_webrtc
-opencv-contrib-python==4.9.0.80
+opencv-python-headless==4.9.0.80
 pickle
