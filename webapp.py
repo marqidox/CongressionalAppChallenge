@@ -13,28 +13,16 @@ mp_holistic = mp.solutions.holistic # Mediapipe Solutions holistic model
 
 with open(r"body_language_model_official_rfc2.pkl","rb") as f:
     model = pickle.load(f)
-    
-class Student:
-    def __init__(self):
-        self.detected_emotion = None
 
-    def update_emotion(self, s_class):
-        self.detected_emotion = s_class
-        return self.send_message_to_student()
-
-    def get_emotion(self):
-        return self.detected_emotion
-
-    def send_message_to_student(self): # works
-        # could make a bank of messages and select randomly from it
-        if self.detected_emotion == "happy":
-            return "Give a thumbs up in the chat!"
-        if self.detected_emotion == "bored":
-            return "Stay engaged by being active! Or, ask for a break."
-        if self.detected_emotion == "confused":
-            return "Raise your hand to ask the teacher a question."
-        if self.detected_emotion == 'sad':
-            return "Talk to someone to process your emotions."
+def get_student_emotion_msg(emotion):
+    if self.detected_emotion == "happy":
+        return "Give a thumbs up in the chat!"
+    if self.detected_emotion == "bored":
+        return "Stay engaged by being active! Or, ask for a break."
+    if self.detected_emotion == "confused":
+        return "Raise your hand to ask the teacher a question."
+    if self.detected_emotion == 'sad':
+        return "Talk to someone to process your emotions."
 
 def generate_student_statistics(student_data):
     try:
@@ -83,8 +71,7 @@ def callback(frame):
             x = pd.DataFrame([row])
             body_language_class = model.predict(x)[0]  # first value of the predict array
             student_data.append(body_language_class.lower())
-            generate_student_statistics(student_data)
-            msg = new_student.update_emotion(body_language_class.lower())
+            msg = get_student_emotion_msg(body_language_class.lower())
             y_max = int(max([landmark.y for landmark in results.face_landmarks.landmark]) * 480)
             y_min = int(min([landmark.y for landmark in results.face_landmarks.landmark]) * 480)
             x_max = int(max([landmark.x for landmark in results.face_landmarks.landmark]) * 640)
@@ -105,3 +92,4 @@ webrtc_streamer(key="example", video_frame_callback=callback, rtc_configuration=
 
 st.subheader("This is the teacher interface.", divider='grey')
 st.write("This is what will appear on a teacher's screen in full deployment.")
+generate_student_statistics(student_data)
