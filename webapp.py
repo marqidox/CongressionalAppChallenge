@@ -83,17 +83,20 @@ webrtc_streamer(key="example", video_frame_callback=callback, rtc_configuration=
 
 st.subheader("This is the teacher interface.", divider='grey')
 st.write("This is what will appear on a teacher's screen in full deployment.")
-counter = Counter(student_data)
-pe_e = max(counter, key=counter.get)
-pe_prp = max(counter.values())/len(student_data)
-if pe_prp >= 0.5:
-    st.write(f"{now}: Majority of your students are {pe_e}.")
-    if pe_prp == "happy":
-        st.write(f"{now}: They are very engaged! Keep on teaching!")
-    if pe_prp == "bored":
-        st.write(f"{now}: Try different engaging strategies, such as calling on students or fun quizzes.")
-    if pe_prp == "confused":
-        st.write(f"{now}: Try explaining the concepts in a different way.")
-    if pe_prp == "sad":
-        st.write(f"{now}: Check in on your students' mental and physical health!")
-st.bar_chart(data=counter, columns=['happy','bored','confused','sad'])
+try:
+    counter = Counter(student_data)
+    pe_e = max(counter, key=counter.get)
+    pe_prp = max(counter.values())/len(student_data)
+    if pe_prp >= 0.5:
+        st.write(f"{now}: Majority of your students are {pe_e}.")
+        if pe_prp == "happy":
+            st.write(f"{now}: They are very engaged! Keep on teaching!")
+        if pe_prp == "bored":
+            st.write(f"{now}: Try different engaging strategies, such as calling on students or fun quizzes.")
+        if pe_prp == "confused":
+            st.write(f"{now}: Try explaining the concepts in a different way.")
+        if pe_prp == "sad":
+            st.write(f"{now}: Check in on your students' mental and physical health!")
+    st.bar_chart(data=counter, columns=['happy','bored','confused','sad'])
+except:
+    st.write("The online session has not started yet!")
