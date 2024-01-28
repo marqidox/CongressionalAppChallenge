@@ -33,7 +33,10 @@ class Student:
             return "Talk to someone to process your emotions."
 
 st.title("Body Language Detection for Online Learning")
-st.write("Student Interface")
+st.subheader("This is the student interface.", divider='grey')
+st.write("This is what will appear on a student's screen in full deployment.")
+
+student_data = []
 
 with open(r"body_language_model_official_rfc2.pkl","rb") as f:
     model = pickle.load(f)
@@ -57,6 +60,7 @@ def callback(frame):
         row = pose_row + face_row
         x = pd.DataFrame([row])
         body_language_class = model.predict(x)[0]  # first value of the predict array
+        student_data.append(body_language_class.lower())
         msg = new_student.update_emotion(body_language_class.lower())
         y_max = int(max([landmark.y for landmark in results.face_landmarks.landmark]) * 480)
         y_min = int(min([landmark.y for landmark in results.face_landmarks.landmark]) * 480)
@@ -75,3 +79,20 @@ def callback(frame):
 webrtc_streamer(key="example", video_frame_callback=callback, rtc_configuration={
         "iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]
     })
+
+st.subheader("This is the teacher interface.", divider='grey')
+st.write("This is what will appear on a teacher's screen in full deployment.")
+counter = Counter(student_data)
+pe_e = max(counter, key=counter.get)
+pe_prp = max(counter.values())/len(student_data)
+if pe_prp >= 0.5:
+    st.write(f"{now}: Majority of your students are {pe_e}.")
+    if pe_prp == "happy":
+        st.write(f"{now}: They are very engaged! Keep on teaching!")
+    if pe_prp == "bored":
+        st.write(f"{now}: Try different engaging strategies, such as calling on students or fun quizzes.")
+    if pe_prp == "confused":
+        st.write(f"{now}: Try explaining the concepts in a different way.")
+    if pe_prp == "sad":
+        st.write(f"{now}: Check in on your students' mental and physical health!")
+st.bar_chart(data=counter, columns=['happy','bored','confused','sad'])
