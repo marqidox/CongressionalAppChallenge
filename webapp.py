@@ -34,7 +34,7 @@ class Student:
 st.title("Body Language Detection for Online Learning")
 st.write("Student Interface")
 
-with open(r"C:/Users/hiloo/TSA Software Dev/body_language_model_official_rfc2.pkl","rb") as f:
+with open(r"body_language_model_official_rfc2.pkl","rb") as f:
     model = pickle.load(f)
 def callback(frame):
     img = frame.to_ndarray(format="bgr24")
