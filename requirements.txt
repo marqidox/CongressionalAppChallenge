@@ -4,5 +4,4 @@ cryptography
 mediapipe
 opencv-python-headless
 scikit-learn
-mediapipe
 streamlit_webrtc
