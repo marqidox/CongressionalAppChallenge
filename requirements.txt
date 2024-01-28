@@ -1,5 +1,9 @@
 streamlit
+altair
+pandas
+numpy
 mediapipe
 scikit-learn
 streamlit_webrtc
 opencv-contrib-python==4.9.0.80
+pickle
