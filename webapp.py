@@ -11,9 +11,6 @@ import numpy as np
 mp_drawing = mp.solutions.drawing_utils # Draw the detections from the model to the screen
 mp_holistic = mp.solutions.holistic # Mediapipe Solutions holistic model
 
-with open(r"body_language_model_official_rfc2.pkl","rb") as f:
-    model = pickle.load(f)
-
 class Student:
     def __init__(self):
         self.detected_emotion = None
@@ -40,12 +37,11 @@ st.title("Body Language Detection for Online Learning")
 st.subheader("This is the student interface.", divider='grey')
 st.write("This is what will appear on a student's screen in full deployment.")
 
-#toggle = Toggle()
+with open(r"body_language_model_official_rfc2.pkl","rb") as f:
+    model = pickle.load(f)
 def callback(frame):
     img = frame.to_ndarray(format="bgr24")
     student = Student()
-    #teacher = Teacher()
-    #if toggle.is_on():  
     with mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=0.5) as holistic:
         img = cv2.cvtColor(img,cv2.COLOR_BGR2RGB)
         img.flags.writeable = False
@@ -63,7 +59,6 @@ def callback(frame):
         row = pose_row + face_row
         x = pd.DataFrame([row])
         body_language_class = model.predict(x)[0]  # first value of the predict array
-        #teacher.append_data(body_language_class.lower())
         msg = new_student.update_emotion(body_language_class.lower())
         y_max = int(max([landmark.y for landmark in results.face_landmarks.landmark]) * 480)
         y_min = int(min([landmark.y for landmark in results.face_landmarks.landmark]) * 480)
