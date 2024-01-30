@@ -14,7 +14,7 @@ charset-normalizer==3.3.2
 click==7.1.2
 colorama==0.4.6
 contourpy==1.2.0
-cryptography==39.0.0
+cryptography
 cycler==0.12.1
 dnspython==2.5.0
 entrypoints==0.4
