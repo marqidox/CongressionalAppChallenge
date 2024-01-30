@@ -44,7 +44,7 @@ class Student:
 st.title("Body Language Detection for Online Learning")
 st.header("Student Interface")
 #st.toggle("Activate Body Language Detector")
-with open(r"C:/Users/hiloo/TSA Software Dev/body_language_model_official_rfc2.pkl","rb") as f:
+with open(r"body_language_model_official_rfc2.pkl","rb") as f:
     model = pickle.load(f)
 
 def callback(frame):
