@@ -31,45 +31,33 @@ st.write("This tool will track your body language when responding to AI intervie
 st.image(use_column_width="always",image="https://raw.githubusercontent.com/marqidox/CongressionalAppChallenge/refs/heads/main2/pexels-thisisengineering-3861969.jpg?token=GHSAT0AAAAAACUR3HXSWD2FABE3KBD44UB6ZY2QTBA")
 c1, c2 = st.columns(2)
 
-with c1:
-    st.header("Begin the Simulator Below")
-    
-    def generate_advice_for_applicant(occupation, n, majority_emotion=""):
-        if n == 1:
-            response = requests.post(
-                url="https://openrouter.ai/api/v1/chat/completions",
-                data=json.dumps({
-                    "models": ["nousresearch/nous-capybara-7b", "mistralai/mistral-7b-instruct","huggingfaceh4/zephyr-7b-beta"],
-                    "messages": [{"role": "user", "content": f"You are applying to be a {occupation}. Having just completed your job interview, the body language most commonly detected was {majority_emotion}. Based on this, assuming the POV of a job interviewer, generate advice for how to improve body language during an interview to maximize chances of being hired."}],
-                    "route": 'fallback'
-                }),
-                headers={"Authorization": f"Bearer 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"}
-            )
-        if n == 2:
-            response = requests.post(
-                url="https://openrouter.ai/api/v1/chat/completions",
-                data=json.dumps({
-                    "models": ["nousresearch/nous-capybara-7b", "mistralai/mistral-7b-instruct","huggingfaceh4/zephyr-7b-beta"],
-                    "messages": [{"role": "user", "content": f"This job applicant is applying to be a {occupation}. Based on this, assuming the POV of a job interviewer, generate questions they would ask. If it is a technical role, please include technical questions (ex. software engineer, program something in python using conditionals)."}],
-                    "route": 'fallback'
-                }),
-                headers={"Authorization": f"Bearer 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"}
-            )
-        r_json = response.json()
-        content = r_json['choices'][0]['message']['content'].strip()
-        return content
-        
-    with st.form("applicant_qna"):
-        st.write("Please fill out the requested fields.")
-        job = st.text_input("What job are you applying for? ex. software engineer")
-        submitted = st.form_submit_button("Submit")
-    if submitted:
-        cnt = generate_advice_for_applicant(job,2)
-        st.header("Answer the following questions while looking into the camera.")
-        st.write(cnt)
-        if "job_applicant_qs" not in st.session_state:
-            st.session_state["job_applicant_qs"] = cnt
-    
+st.header("Step 1: Fill out the Form")
+st.write("This is so we can generate a list of questions specific to the job you are applying to.")
+def generate_advice_for_applicant(occupation, n, majority_emotion=""):
+    if n == 1:
+        response = requests.post(
+            url="https://openrouter.ai/api/v1/chat/completions",
+            data=json.dumps({
+                "models": ["nousresearch/nous-capybara-7b", "mistralai/mistral-7b-instruct","huggingfaceh4/zephyr-7b-beta"],
+                "messages": [{"role": "user", "content": f"You are applying to be a {occupation}. Having just completed your job interview, the body language most commonly detected was {majority_emotion}. Based on this, assuming the POV of a job interviewer, generate advice for how to improve body language during an interview to maximize chances of being hired."}],
+                "route": 'fallback'
+            }),
+            headers={"Authorization": f"Bearer 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"}
+        )
+    if n == 2:
+        response = requests.post(
+            url="https://openrouter.ai/api/v1/chat/completions",
+            data=json.dumps({
+                "models": ["nousresearch/nous-capybara-7b", "mistralai/mistral-7b-instruct","huggingfaceh4/zephyr-7b-beta"],
+                "messages": [{"role": "user", "content": f"This job applicant is applying to be a {occupation}. Based on this, assuming the POV of a job interviewer, generate questions they would ask. If it is a technical role, please include technical questions (ex. software engineer, program something in python using conditionals)."}],
+                "route": 'fallback'
+            }),
+            headers={"Authorization": f"Bearer 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"}
+        )
+    r_json = response.json()
+    content = r_json['choices'][0]['message']['content'].strip()
+    return content
+
 class Applicant:
     def __init__(self):
         self.detected_emotion = None
@@ -131,33 +119,46 @@ def callback(frame):
     with lock:
         st.session_state['job_applicant_container'][body_language_class.lower()] += 1
     return av.VideoFrame.from_ndarray(img, format="bgr24")
-
-with c2:
-    ctx = webrtc_streamer(key="example", video_frame_callback=callback, rtc_configuration={
-            "iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]
-        })
-    st.header("This is the mock interviewer.")
     
-    stutter = st.empty()
-    while ctx.state.playing:
-        with lock:
-            st.session_state['finished'] = False
-        with stutter.container():
+with st.form("applicant_qna"):
+    st.write("Please fill out the requested fields.")
+    job = st.text_input("What job are you applying for? ex. software engineer")
+    submitted = st.form_submit_button("Submit")
+if submitted:
+    cnt = generate_advice_for_applicant(job,2)
+    st.header("Answer the following questions while looking into the camera.")
+    st.write(cnt)
+    if "job_applicant_qs" not in st.session_state:
+        st.session_state["job_applicant_qs"] = cnt
+
+    with c1:
+        st.header("This is the mock interviewer.")
+        ctx = webrtc_streamer(key="example", video_frame_callback=callback, rtc_configuration={
+                "iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]
+            })
+        
+        stutter = st.empty()
+        while ctx.state.playing:
             with lock:
-                data = st.session_state['job_applicant_container']
-                labels = list(data.keys())
-                counts = list(data.values())
-                questions = st.session_state["job_applicant_qs"]
-            st.write(questions)
-            pe_e = max(data, key=data.get)
-            st.write(f"Your body language mostly indicates you are {pe_e}.")
-            fig, ax = plt.subplots()
-            ax.pie(counts, labels=labels, autopct='%.2f')
-            ax.axis('equal')
-            st.pyplot(fig)
-            with open("dump.txt", 'w') as file:
-                file.write(pe_e)
-            time.sleep(5)
+                st.session_state['finished'] = False
+            with stutter.container():
+                with lock:
+                    data = st.session_state['job_applicant_container']
+                    labels = list(data.keys())
+                    counts = list(data.values())
+                    questions = st.session_state["job_applicant_qs"]
+                st.write(questions)
+                pe_e = max(data, key=data.get)
+                st.write(f"Your body language mostly indicates you are {pe_e}.")
+                fig, ax = plt.subplots()
+                ax.pie(counts, labels=labels, autopct='%.2f')
+                ax.axis('equal')
+                st.pyplot(fig)
+                with open("dump.txt", 'w') as file:
+                    file.write(pe_e)
+                time.sleep(5)
+    with c2:
+        pass
 
 with open("dump.txt") as file:
     main_emotion = file.read()
