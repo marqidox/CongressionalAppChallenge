@@ -152,7 +152,6 @@ c1, c2, c3 = st.columns(3)
 with c1:
     ctx = webrtc_streamer(key="example", video_frame_callback=callback, rtc_configuration={
                     "iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]})
-    st.write(msg)
 with c2:
     if st.session_state.t1:
         st.image("blackmaninterviewer1.jpg")
@@ -175,11 +174,13 @@ try:
                 labels = list(data.keys())
                 counts = list(data.values())
                 qs = job_applicant_qs
+                msgs = msg
             with c3:
                 try:
                     st.write(qs)
                 except:
                     pass
+            st.write(msgs)
             pe_e = max(data, key=data.get)
             st.write(f"Your body language mostly indicates you are {pe_e}.")
             fig, ax = plt.subplots()
