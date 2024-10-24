@@ -63,7 +63,7 @@ class Applicant:
         if self.detected_emotion == 'sad':
             return "This process may be difficult, but chin up! Negative emotion could be misconstrued as disinterest or dissatisification with job details."
 
-def generate_advice_for_applicant(majority_emotion="", occupation, n):
+def generate_advice_for_applicant(occupation, n, majority_emotion=""):
     if n == 1:
         response = requests.post(
             url="https://openrouter.ai/api/v1/chat/completions",
@@ -168,5 +168,5 @@ if st.session_state['finished']:
         job = st.text_input("What job were you applying for? ex. software engineer")
         submitted = st.form_submit_button("Submit")
     if submitted:
-        cnt = generate_advice_for_applicant(main_emotion, job)
+        cnt = generate_advice_for_applicant(job, 1, main_emotion)
         st.write(cnt)
