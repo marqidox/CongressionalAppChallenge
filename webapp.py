@@ -20,8 +20,7 @@ mp_drawing = mp.solutions.drawing_utils # Draw the detections from the model to 
 mp_holistic = mp.solutions.holistic # Mediapipe Solutions holistic model
 
 finished = True
-if "job_applicant_container" not in st.session_state:
-    st.session_state["job_applicant_container"] = {'happy': 1, 'bored': 1, "confused": 1, 'sad': 1}
+job_applicant_container = {'happy': 1, 'bored': 1, "confused": 1, 'sad': 1}
 
 st.set_page_config(
     page_title="Job Interview Simulator",
@@ -84,6 +83,7 @@ with open(r"body_language_model_official_gbc3.pkl","rb") as f:
 lock = threading.Lock()
 
 def callback(frame):
+    global job_applicant_container
     img = frame.to_ndarray(format="bgr24")
     new_applicant = Applicant()
     with mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=0.5) as holistic:
@@ -116,7 +116,7 @@ def callback(frame):
         cv2.rectangle(img, (2, 2), (0 + len(msg) * 15 + 5, 33), (255, 255, 255), -1)
         cv2.putText(img, msg, (9, 25), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 1, cv2.LINE_AA)
     with lock:
-        st.session_state['job_applicant_container'][body_language_class.lower()] += 1
+        job_applicant_container[body_language_class.lower()] += 1
     return av.VideoFrame.from_ndarray(img, format="bgr24")
 
 st.header("Step 1: Pick Your Interviewer")
@@ -144,8 +144,8 @@ with st.form("applicant_qna"):
     submitted = st.form_submit_button("Submit")
 if submitted:
     cnt = generate_advice_for_applicant(job,2)
-    if "job_applicant_qs" not in st.session_state:
-        st.session_state["job_applicant_qs"] = cnt
+    job_applicant_qs = cnt
+    global job_applicant_qs
         
 st.header("Step 3: Start Your Mock Interview")
 st.write("Answer the following questions while looking into the camera.")
@@ -155,9 +155,10 @@ with c1:
                     "iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]})
 with c2:
     if st.session_state.t1:
-                st.image("blackmaninterviewer1.jpg")
+        st.image("blackmaninterviewer1.jpg")
     if st.session_state.t2:
         st.image("hispanicwomeninterviewer1.jpg")
+    '''
     def say_questions_aloud():
         if st.session_state.t3:
             questions = st.session_state["job_applicant_qs"]
@@ -165,7 +166,8 @@ with c2:
             myobj = gTTS(text=questions, lang=language, slow=True)
             myobj.save("jobquestions.mp3")
             os.system("start jobquestions.mp3")
-    #st.checkbox("Speak Aloud",key="t3", on_change=say_questions_aloud)
+    st.checkbox("Speak Aloud",key="t3", on_change=say_questions_aloud)
+    '''
 with c3:
     try:
         st.write(cnt)
@@ -179,10 +181,10 @@ try:
             finished = False
         with stutter.container():
             with lock:
-                data = st.session_state['job_applicant_container']
+                data = job_applicant_container
                 labels = list(data.keys())
                 counts = list(data.values())
-                qs = st.session_state["job_applicant_qs"]
+                qs = job_applicant_qs
             with c3:
                 try:
                     st.write(qs)
