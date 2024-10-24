@@ -53,12 +53,14 @@ class Applicant:
 with open(r"body_language_model_official_gbc3.pkl","rb") as f:
     model = pickle.load(f)
 
-finished=True
+if 'finished' not in st.session_state:
+    st.session_state['finished'] = True
+if "job_applicant_container" not in st.session_state:
+    st.session_state["job_applicant_container"] = {'happy': 1, 'bored': 1, "confused": 1, 'sad': 1}
+
 lock = threading.Lock()
-job_applicant_container = {'happy': 1, 'bored': 1, "confused": 1, 'sad': 1}
 
 def callback(frame):
-    global job_applicant_container
     img = frame.to_ndarray(format="bgr24")
     new_applicant = Applicant()
     with mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=0.5) as holistic:
@@ -91,7 +93,7 @@ def callback(frame):
         cv2.rectangle(img, (2, 2), (0 + len(msg) * 15 + 5, 33), (255, 255, 255), -1)
         cv2.putText(img, msg, (9, 25), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 1, cv2.LINE_AA)
     with lock:
-        job_applicant_container[body_language_class.lower()] += 1
+        st.session_state['job_applicant_container'][body_language_class.lower()] += 1
     return av.VideoFrame.from_ndarray(img, format="bgr24")
 
 with c1:
@@ -103,12 +105,12 @@ with c1:
     stutter = st.empty()
     while ctx.state.playing:
         with lock:
-            finished = False
+            st.session_state['finished'] = False
         with stutter.container():
             with lock:
-                data = job_applicant_container
-                labels = list(job_applicant_container.keys())
-                counts = list(job_applicant_container.values())
+                data = st.session_state['job_applicant_container']
+                labels = list(data.keys())
+                counts = list(data.values())
             pe_e = max(data, key=data.get)
             st.write(f"Your body language mostly indicates you are {pe_e}.")
             fig, ax = plt.subplots()
@@ -141,7 +143,7 @@ def generate_advice_for_applicant(majority_emotion, occupation):
     return content
 
 # program started and captured new data
-if finished:
+if st.session_state['finished']:
     result = st.subheader("Get Feedback from Chatbot")
     with st.form("applicant_feedback"):
         st.write("Please fill out the requested fields.")
@@ -150,4 +152,3 @@ if finished:
     if submitted:
         cnt = generate_advice_for_applicant(main_emotion, job)
         st.write(cnt)
-
