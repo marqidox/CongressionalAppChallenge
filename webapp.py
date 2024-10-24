@@ -19,8 +19,7 @@ import os
 mp_drawing = mp.solutions.drawing_utils # Draw the detections from the model to the screen
 mp_holistic = mp.solutions.holistic # Mediapipe Solutions holistic model
 
-if 'finished' not in st.session_state:
-    st.session_state['finished'] = True
+finished = True
 if "job_applicant_container" not in st.session_state:
     st.session_state["job_applicant_container"] = {'happy': 1, 'bored': 1, "confused": 1, 'sad': 1}
 
@@ -177,7 +176,7 @@ try:
     stutter = st.empty()
     while ctx.state.playing:
         with lock:
-            st.session_state['finished'] = False
+            finished = False
         with stutter.container():
             with lock:
                 data = st.session_state['job_applicant_container']
@@ -205,7 +204,7 @@ with open("dump.txt") as file:
     main_emotion = file.read()
 
 # program started and captured new data
-if st.session_state['finished']:
+if finished:
     result = st.subheader("Get Feedback from Chatbot")
     with st.form("applicant_feedback"):
         st.write("Please fill out the requested fields.")
