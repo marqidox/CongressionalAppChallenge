@@ -183,6 +183,12 @@ try:
                 data = st.session_state['job_applicant_container']
                 labels = list(data.keys())
                 counts = list(data.values())
+                qs = st.session_state["job_applicant_qs"]
+            with c3:
+                try:
+                    st.write(qs)
+                except:
+                    pass
             pe_e = max(data, key=data.get)
             st.write(f"Your body language mostly indicates you are {pe_e}.")
             fig, ax = plt.subplots()
