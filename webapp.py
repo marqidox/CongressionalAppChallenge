@@ -64,9 +64,8 @@ if submitted:
     cnt = generate_advice_for_applicant(job,2)
     st.header("Answer the following questions while looking into the camera.")
     st.write(cnt)
-
-if "job_applicant_qs" not in st.session_state:
-    st.session_state["job_applicant_qs"] = cnt
+    if "job_applicant_qs" not in st.session_state:
+        st.session_state["job_applicant_qs"] = cnt
     
 class Applicant:
     def __init__(self):
