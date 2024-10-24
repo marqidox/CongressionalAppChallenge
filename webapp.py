@@ -136,12 +136,14 @@ with c4:
 
 st.header("Step 2: Fill out the Form")
 st.write("This is so we can generate a list of questions specific to the job you are applying to.")
+job_applicant_qs = ""
 with st.form("applicant_qna"):
     st.write("Please fill out the requested fields.")
     job = st.text_input("What job are you applying for? ex. software engineer")
     submitted = st.form_submit_button("Submit")
 if submitted:
     cnt = generate_advice_for_applicant(job,2)
+    global
     job_applicant_qs = cnt
         
 st.header("Step 3: Start Your Mock Interview")
@@ -177,7 +179,7 @@ try:
                 try:
                     st.write(qs)
                 except:
-                    pass
+                    st.write("Questions loading...")
             st.write(msgs)
             pe_e = max(data, key=data.get)
             st.write(f"Your body language mostly indicates you are {pe_e}.")
