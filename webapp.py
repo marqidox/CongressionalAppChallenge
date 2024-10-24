@@ -33,7 +33,7 @@ st.write("This tool will track your body language when responding to AI intervie
 st.image(use_column_width="always",image="https://github.com/marqidox/CongressionalAppChallenge/blob/1e3048e79e80403fbad6ccbd49f97188e5dee2f8/pexels-thisisengineering-3861969.jpg")
 st.header("Begin the Simulator Below")
 
-@st.cache_resource
+@st.cache_data
 class Applicant:
     def __init__(self):
         self.detected_emotion = None
@@ -127,7 +127,7 @@ with c2:
 with open("dump.txt") as file:
     main_emotion = file.read()
 
-@st.cache_resource
+@st.cache_data
 def generate_advice_for_applicant(majority_emotion, occupation):
     response = requests.post(
         url="https://openrouter.ai/api/v1/chat/completions",
