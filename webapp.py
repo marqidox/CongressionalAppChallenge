@@ -166,7 +166,7 @@ with c2:
             myobj = gTTS(text=questions, lang=language, slow=True)
             myobj.save("jobquestions.mp3")
             os.system("start jobquestions.mp3")
-    st.checkbox("Speak Aloud",key="t3", on_change=say_questions_aloud)
+    #st.checkbox("Speak Aloud",key="t3", on_change=say_questions_aloud)
 with c3:
     try:
         st.write(cnt)
