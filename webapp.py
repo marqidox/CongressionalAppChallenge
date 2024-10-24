@@ -145,11 +145,12 @@ with st.form("applicant_qna"):
     submitted = st.form_submit_button("Submit")
 if submitted:
     cnt = generate_advice_for_applicant(job,2)
-    st.header("Answer the following questions while looking into the camera.")
-    st.write(cnt)
     if "job_applicant_qs" not in st.session_state:
         st.session_state["job_applicant_qs"] = cnt
         
+    st.header("Answer the following questions while looking into the camera.")
+    st.write(cnt)
+    time.sleep(10)
     video = st.container()
     with video:
         c1, c2 = st.columns(2)
