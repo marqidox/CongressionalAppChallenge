@@ -154,7 +154,7 @@ if submitted:
         ctx = webrtc_streamer(key="example", video_frame_callback=callback, rtc_configuration={
                 "iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]
             })
-        
+        time.sleep(10)
         stutter = st.empty()
         while ctx.state.playing:
             with lock:
