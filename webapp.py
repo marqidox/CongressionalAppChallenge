@@ -31,7 +31,7 @@ st.set_page_config(
 
 st.title("Job Interview Simulator")
 st.write("This tool will track your body language when responding to AI interviewer. This real-time feedback will train for the real thing.")
-st.image(use_column_width="always",image="CongressionalAppChallenge/pexels-thisisengineering-3861969.jpg")
+st.image(use_column_width="always",image="pexels-thisisengineering-3861969.jpg")
 c1, c2 = st.columns(2)
 
 def generate_advice_for_applicant(occupation, n, majority_emotion=""):
@@ -130,10 +130,10 @@ def make_toggle_false():
     elif st.session_state.t2:
         st.session_state.t1 = False
 with c3:
-    st.image("CongressionalAppChallenge/blackmaninterviewer1.jpg")
+    st.image("blackmaninterviewer1.jpg")
     st.checkbox("Black Male Interviewer", key="t1", on_change=make_toggle_false)
 with c4:
-    st.image("CongressionalAppChallenge/hispanicwomeninterviewer1.jpg")
+    st.image("hispanicwomeninterviewer1.jpg")
     st.checkbox("Hispanic Female Interviewer", key="t2", on_change=make_toggle_false)
 
 st.header("Step 2: Fill out the Form")
@@ -177,9 +177,9 @@ if submitted:
                 time.sleep(5)
     with c2:
         if st.session_state.t1:
-            st.image("CongressionalAppChallenge/blackmaninterviewer1.jpg")
+            st.image("blackmaninterviewer1.jpg")
         if st.session_state.t2:
-            st.image("CongressionalAppChallenge/hispanicwomeninterviewer1.jpg")
+            st.image("hispanicwomeninterviewer1.jpg")
         def say_questions_aloud():
             if st.session_state.t3:
                 questions = st.session_state["job_applicant_qs"]
