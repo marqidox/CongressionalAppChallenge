@@ -36,7 +36,7 @@ markdown-it-py==3.0.0
 MarkupSafe==2.1.4
 matplotlib==3.8.2
 mdurl==0.1.2
-mediapipe==0.10.9
+mediapipe==0.8.10.1
 numpy==1.26.3
 opencv-contrib-python==4.9.0.80
 opencv-python-headless==4.9.0.80
