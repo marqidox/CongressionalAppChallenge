@@ -67,7 +67,7 @@ setuptools==68.2.0
 six==1.16.0
 smmap==5.0.1
 sounddevice==0.4.6
-streamlit
+streamlit==1.29.0
 streamlit-webrtc==0.44.1
 tenacity==8.2.3
 threadpoolctl==3.2.0
