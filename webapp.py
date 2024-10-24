@@ -119,7 +119,22 @@ def callback(frame):
     with lock:
         st.session_state['job_applicant_container'][body_language_class.lower()] += 1
     return av.VideoFrame.from_ndarray(img, format="bgr24")
-    
+
+st.header("Step 2: Pick Your Interviewer")
+c3, c4 = st.columns(2)
+
+def make_toggle_false():
+    if st.session_state.t1:
+        st.session_state.t2 = False
+    if st.session_state.t2:
+        st.session_state.t1 = False
+with c3:
+    st.image("https://raw.githubusercontent.com/marqidox/CongressionalAppChallenge/refs/heads/main2/blackmaninterviewer1.jpg?token=GHSAT0AAAAAACUR3HXT5D6DJ5CJ2F4TWHYYZY2T3HQ")
+    st.toggle("Black Male Interviewer", key="t1", on_change=make_toggle_false)
+with c4:
+    st.image("https://raw.githubusercontent.com/marqidox/CongressionalAppChallenge/refs/heads/main2/hispanicwomeninterviewer1.jpg?token=GHSAT0AAAAAACUR3HXSVZXCNOOF7YZTJBJSZY2UA3Q")
+    st.toggle("Hispanic Female Interviewer", key="t2", on_change=make_toggle_false)
+
 with st.form("applicant_qna"):
     st.write("Please fill out the requested fields.")
     job = st.text_input("What job are you applying for? ex. software engineer")
