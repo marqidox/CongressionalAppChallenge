@@ -16,6 +16,11 @@ from datetime import datetime
 mp_drawing = mp.solutions.drawing_utils # Draw the detections from the model to the screen
 mp_holistic = mp.solutions.holistic # Mediapipe Solutions holistic model
 
+if 'finished' not in st.session_state:
+    st.session_state['finished'] = True
+if "job_applicant_container" not in st.session_state:
+    st.session_state["job_applicant_container"] = {'happy': 1, 'bored': 1, "confused": 1, 'sad': 1}
+
 st.set_page_config(
     page_title="Job Interview Simulator",
     layout="wide"
@@ -52,12 +57,7 @@ class Applicant:
 
 with open(r"body_language_model_official_gbc3.pkl","rb") as f:
     model = pickle.load(f)
-
-if 'finished' not in st.session_state:
-    st.session_state['finished'] = True
-if "job_applicant_container" not in st.session_state:
-    st.session_state["job_applicant_container"] = {'happy': 1, 'bored': 1, "confused": 1, 'sad': 1}
-
+    
 lock = threading.Lock()
 
 def callback(frame):
