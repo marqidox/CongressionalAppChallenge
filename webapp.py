@@ -13,6 +13,9 @@ import numpy as np
 import threading
 from collections import Counter
 from datetime import datetime
+from gtts import gTTS
+import os
+
 mp_drawing = mp.solutions.drawing_utils # Draw the detections from the model to the screen
 mp_holistic = mp.solutions.holistic # Mediapipe Solutions holistic model
 
@@ -31,8 +34,6 @@ st.write("This tool will track your body language when responding to AI intervie
 st.image(use_column_width="always",image="https://raw.githubusercontent.com/marqidox/CongressionalAppChallenge/refs/heads/main2/pexels-thisisengineering-3861969.jpg?token=GHSAT0AAAAAACUR3HXSWD2FABE3KBD44UB6ZY2QTBA")
 c1, c2 = st.columns(2)
 
-st.header("Step 1: Fill out the Form")
-st.write("This is so we can generate a list of questions specific to the job you are applying to.")
 def generate_advice_for_applicant(occupation, n, majority_emotion=""):
     if n == 1:
         response = requests.post(
@@ -120,13 +121,13 @@ def callback(frame):
         st.session_state['job_applicant_container'][body_language_class.lower()] += 1
     return av.VideoFrame.from_ndarray(img, format="bgr24")
 
-st.header("Step 2: Pick Your Interviewer")
+st.header("Step 1: Pick Your Interviewer")
 c3, c4 = st.columns(2)
 
 def make_toggle_false():
     if st.session_state.t1:
         st.session_state.t2 = False
-    if st.session_state.t2:
+    elif st.session_state.t2:
         st.session_state.t1 = False
 with c3:
     st.image("https://raw.githubusercontent.com/marqidox/CongressionalAppChallenge/refs/heads/main2/blackmaninterviewer1.jpg?token=GHSAT0AAAAAACUR3HXT5D6DJ5CJ2F4TWHYYZY2T3HQ")
@@ -135,6 +136,8 @@ with c4:
     st.image("https://raw.githubusercontent.com/marqidox/CongressionalAppChallenge/refs/heads/main2/hispanicwomeninterviewer1.jpg?token=GHSAT0AAAAAACUR3HXSVZXCNOOF7YZTJBJSZY2UA3Q")
     st.checkbox("Hispanic Female Interviewer", key="t2", on_change=make_toggle_false)
 
+st.header("Step 2: Fill out the Form")
+st.write("This is so we can generate a list of questions specific to the job you are applying to.")
 with st.form("applicant_qna"):
     st.write("Please fill out the requested fields.")
     job = st.text_input("What job are you applying for? ex. software engineer")
@@ -173,8 +176,19 @@ if submitted:
                     file.write(pe_e)
                 time.sleep(5)
     with c2:
-        pass
-
+        if st.session_state.t1:
+            st.image("https://raw.githubusercontent.com/marqidox/CongressionalAppChallenge/refs/heads/main2/blackmaninterviewer1.jpg?token=GHSAT0AAAAAACUR3HXT5D6DJ5CJ2F4TWHYYZY2T3HQ")
+        if st.session_state.t2:
+            st.image("https://raw.githubusercontent.com/marqidox/CongressionalAppChallenge/refs/heads/main2/hispanicwomeninterviewer1.jpg?token=GHSAT0AAAAAACUR3HXSVZXCNOOF7YZTJBJSZY2UA3Q")
+        def say_questions_aloud():
+            if st.session_state.t3:
+                questions = st.session_state["job_applicant_qs"]
+                language = 'en'
+                myobj = gTTS(text=questions, lang=language, slow=True)
+                myobj.save("jobquestions.mp3")
+                os.system("start jobquestions.mp3")
+        st.checkbox("Speak Aloud",key="t3", on_change=say_questions_aloud)
+        
 with open("dump.txt") as file:
     main_emotion = file.read()
 
