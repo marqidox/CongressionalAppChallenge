@@ -168,7 +168,10 @@ with c2:
             os.system("start jobquestions.mp3")
     st.checkbox("Speak Aloud",key="t3", on_change=say_questions_aloud)
 with c3:
-    st.write(cnt)
+    try:
+        st.write(cnt)
+    except:
+        pass
 
 try:        
     stutter = st.empty()
