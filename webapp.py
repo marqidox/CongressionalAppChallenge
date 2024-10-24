@@ -32,7 +32,7 @@ st.write("This tool will track your body language when responding to AI intervie
 st.image(use_column_width="always",image="https://github.com/marqidox/CongressionalAppChallenge/blob/1e3048e79e80403fbad6ccbd49f97188e5dee2f8/pexels-thisisengineering-3861969.jpg")
 st.header("Begin the Simulator Below")
 
-with st.form("applicant_feedback"):
+with st.form("applicant_qna"):
     st.write("Please fill out the requested fields.")
     job = st.text_input("What job are you applying for? ex. software engineer")
     submitted = st.form_submit_button("Submit")
