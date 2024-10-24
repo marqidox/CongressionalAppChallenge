@@ -32,7 +32,6 @@ st.set_page_config(
 st.title("Job Interview Simulator")
 st.write("This tool will track your body language when responding to AI interviewer. This real-time feedback will train for the real thing.")
 st.image(use_column_width="always",image="pexels-thisisengineering-3861969.jpg")
-c1, c2 = st.columns(2)
 
 def generate_advice_for_applicant(occupation, n, majority_emotion=""):
     if n == 1:
@@ -126,9 +125,11 @@ c3, c4 = st.columns(2)
 
 def make_toggle_false():
     if st.session_state.t1:
-        st.session_state.t2 = False
+        if st.session_state.t2:
+             st.session_state.t2 = False
     elif st.session_state.t2:
-        st.session_state.t1 = False
+        if st.session_state.t1:
+            st.session_state.t1 = False
 with c3:
     st.image("blackmaninterviewer1.jpg")
     st.checkbox("Black Male Interviewer", key="t1", on_change=make_toggle_false)
@@ -148,46 +149,49 @@ if submitted:
     st.write(cnt)
     if "job_applicant_qs" not in st.session_state:
         st.session_state["job_applicant_qs"] = cnt
-
-    with c1:
-        st.header("This is the mock interviewer.")
-        ctx = webrtc_streamer(key="example", video_frame_callback=callback, rtc_configuration={
-                "iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]
-            })
-        time.sleep(10)
-        stutter = st.empty()
-        while ctx.state.playing:
-            with lock:
-                st.session_state['finished'] = False
-            with stutter.container():
+        
+    video = st.container()
+    with video:
+        c1, c2 = st.columns(2)
+        with c1:
+            st.header("This is the mock interviewer.")
+            ctx = webrtc_streamer(key="example", video_frame_callback=callback, rtc_configuration={
+                    "iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]
+                })
+            time.sleep(10)
+            stutter = st.empty()
+            while ctx.state.playing:
                 with lock:
-                    data = st.session_state['job_applicant_container']
-                    labels = list(data.keys())
-                    counts = list(data.values())
+                    st.session_state['finished'] = False
+                with stutter.container():
+                    with lock:
+                        data = st.session_state['job_applicant_container']
+                        labels = list(data.keys())
+                        counts = list(data.values())
+                        questions = st.session_state["job_applicant_qs"]
+                    st.write(questions)
+                    pe_e = max(data, key=data.get)
+                    st.write(f"Your body language mostly indicates you are {pe_e}.")
+                    fig, ax = plt.subplots()
+                    ax.pie(counts, labels=labels, autopct='%.2f')
+                    ax.axis('equal')
+                    st.pyplot(fig)
+                    with open("dump.txt", 'w') as file:
+                        file.write(pe_e)
+                    time.sleep(5)
+        with c2:
+            if st.session_state.t1:
+                st.image("blackmaninterviewer1.jpg")
+            if st.session_state.t2:
+                st.image("hispanicwomeninterviewer1.jpg")
+            def say_questions_aloud():
+                if st.session_state.t3:
                     questions = st.session_state["job_applicant_qs"]
-                st.write(questions)
-                pe_e = max(data, key=data.get)
-                st.write(f"Your body language mostly indicates you are {pe_e}.")
-                fig, ax = plt.subplots()
-                ax.pie(counts, labels=labels, autopct='%.2f')
-                ax.axis('equal')
-                st.pyplot(fig)
-                with open("dump.txt", 'w') as file:
-                    file.write(pe_e)
-                time.sleep(5)
-    with c2:
-        if st.session_state.t1:
-            st.image("blackmaninterviewer1.jpg")
-        if st.session_state.t2:
-            st.image("hispanicwomeninterviewer1.jpg")
-        def say_questions_aloud():
-            if st.session_state.t3:
-                questions = st.session_state["job_applicant_qs"]
-                language = 'en'
-                myobj = gTTS(text=questions, lang=language, slow=True)
-                myobj.save("jobquestions.mp3")
-                os.system("start jobquestions.mp3")
-        st.checkbox("Speak Aloud",key="t3", on_change=say_questions_aloud)
+                    language = 'en'
+                    myobj = gTTS(text=questions, lang=language, slow=True)
+                    myobj.save("jobquestions.mp3")
+                    os.system("start jobquestions.mp3")
+            st.checkbox("Speak Aloud",key="t3", on_change=say_questions_aloud)
         
 with open("dump.txt") as file:
     main_emotion = file.read()
