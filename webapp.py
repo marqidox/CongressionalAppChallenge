@@ -143,24 +143,19 @@ with st.form("applicant_qna"):
     st.write("Please fill out the requested fields.")
     job = st.text_input("What job are you applying for? ex. software engineer")
     submitted = st.form_submit_button("Submit")
-
-st.header("Step 3: Start Your Mock Interview")
-st.write("Answer the following questions while looking into the camera.")
-ctx = webrtc_streamer(key="example", video_frame_callback=callback, rtc_configuration={
-                    "iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]
-                })
-video = st.empty()
 if submitted:
     cnt = generate_advice_for_applicant(job,2)
     if "job_applicant_qs" not in st.session_state:
         st.session_state["job_applicant_qs"] = cnt
         
-    with video.container():
-        c1, c2, c3 = st.columns(3)
-        with c1:
-            pass
-        with c2:
-            if st.session_state.t1:
+st.header("Step 3: Start Your Mock Interview")
+st.write("Answer the following questions while looking into the camera.")
+c1, c2, c3 = st.columns(3)
+with c1:
+    ctx = webrtc_streamer(key="example", video_frame_callback=callback, rtc_configuration={
+                    "iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]})
+with c2:
+    if st.session_state.t1:
                 st.image("blackmaninterviewer1.jpg")
             if st.session_state.t2:
                 st.image("hispanicwomeninterviewer1.jpg")
@@ -172,8 +167,8 @@ if submitted:
                     myobj.save("jobquestions.mp3")
                     os.system("start jobquestions.mp3")
             st.checkbox("Speak Aloud",key="t3", on_change=say_questions_aloud)
-        with c3:
-            st.write(cnt)
+with c3:
+    st.write(cnt)
 
 try:        
     stutter = st.empty()
@@ -185,8 +180,6 @@ try:
                 data = st.session_state['job_applicant_container']
                 labels = list(data.keys())
                 counts = list(data.values())
-                questions = st.session_state["job_applicant_qs"]
-            st.write(questions)
             pe_e = max(data, key=data.get)
             st.write(f"Your body language mostly indicates you are {pe_e}.")
             fig, ax = plt.subplots()
