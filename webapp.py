@@ -157,16 +157,6 @@ with c2:
         st.image("blackmaninterviewer1.jpg")
     if st.session_state.t2:
         st.image("hispanicwomeninterviewer1.jpg")
-    '''
-    def say_questions_aloud():
-        if st.session_state.t3:
-            questions = st.session_state["job_applicant_qs"]
-            language = 'en'
-            myobj = gTTS(text=questions, lang=language, slow=True)
-            myobj.save("jobquestions.mp3")
-            os.system("start jobquestions.mp3")
-    st.checkbox("Speak Aloud",key="t3", on_change=say_questions_aloud)
-    '''
 with c3:
     try:
         st.write(cnt)
