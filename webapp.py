@@ -30,7 +30,7 @@ c1, c2 = st.columns(2)
 
 st.title("Job Interview Simulator")
 st.write("This tool will track your body language when responding to AI interviewer. This real-time feedback will train for the real thing.")
-st.image(use_column_width="always",image="pexels-thisisengineering-3861969.jpg")
+st.image(use_column_width="always",image="https://github.com/marqidox/CongressionalAppChallenge/blob/1e3048e79e80403fbad6ccbd49f97188e5dee2f8/pexels-thisisengineering-3861969.jpg")
 st.header("Begin the Simulator Below")
 
 @st.cache_resource
