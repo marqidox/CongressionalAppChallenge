@@ -21,7 +21,6 @@ mp_holistic = mp.solutions.holistic # Mediapipe Solutions holistic model
 
 finished = True
 job_applicant_container = {'happy': 1, 'bored': 1, "confused": 1, 'sad': 1}
-msg = ""
 
 st.set_page_config(
     page_title="Job Interview Simulator",
@@ -83,8 +82,9 @@ with open(r"body_language_model_official_gbc3.pkl","rb") as f:
 
 lock = threading.Lock()
 
+st.session_state["msg"] = ""
 def callback(frame):
-    global job_applicant_container, msg
+    global job_applicant_container
     img = frame.to_ndarray(format="bgr24")
     new_applicant = Applicant()
     with mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=0.5) as holistic:
@@ -114,7 +114,7 @@ def callback(frame):
                     cv2.LINE_AA)
     with lock:
         job_applicant_container[body_language_class.lower()] += 1
-        msg = new_applicant.update_emotion(body_language_class.lower())
+        st.session_state["msg"] = new_applicant.update_emotion(body_language_class.lower())
     return av.VideoFrame.from_ndarray(img, format="bgr24")
 
 st.header("Step 1: Pick Your Interviewer")
