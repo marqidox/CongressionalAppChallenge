@@ -65,6 +65,9 @@ if submitted:
     st.header("Answer the following questions while looking into the camera.")
     st.write(cnt)
 
+if "job_applicant_qs" not in st.session_state:
+    st.session_state["job_applicant_qs"] = cnt
+    
 class Applicant:
     def __init__(self):
         self.detected_emotion = None
@@ -141,6 +144,8 @@ while ctx.state.playing:
             data = st.session_state['job_applicant_container']
             labels = list(data.keys())
             counts = list(data.values())
+            questions = st.session_state["job_applicant_qs"]
+        st.write(questions)
         pe_e = max(data, key=data.get)
         st.write(f"Your body language mostly indicates you are {pe_e}.")
         fig, ax = plt.subplots()
