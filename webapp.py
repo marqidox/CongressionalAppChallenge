@@ -20,6 +20,7 @@ mp_drawing = mp.solutions.drawing_utils # Draw the detections from the model to 
 mp_holistic = mp.solutions.holistic # Mediapipe Solutions holistic model
 
 finished = True
+lock = threading.Lock()
 job_applicant_container = {'happy': 1, 'bored': 1, "confused": 1, 'sad': 1}
 
 st.set_page_config(
@@ -79,8 +80,6 @@ class Applicant:
 
 with open(r"body_language_model_official_gbc3.pkl","rb") as f:
     model = pickle.load(f)
-
-lock = threading.Lock()
 
 st.session_state["msg"] = ""
 def callback(frame):
@@ -165,16 +164,14 @@ try:
         with stutter.container():
             with lock:
                 data = job_applicant_container
-                labels = list(data.keys())
-                counts = list(data.values())
-                qs = st.session_state["job_applicant_qs"]
-                msgs = msg
+                labels = list(job_applicant_container.keys())
+                counts = list(job_applicant_container.values())
             with c3:
                 try:
-                    st.write(qs)
+                    st.write(st.session_state["job_applicant_qs"])
                 except:
                     st.write("Questions loading...")
-            st.write(msgs)
+            st.write(st.session_state["msg"])
             pe_e = max(data, key=data.get)
             st.write(f"Your body language mostly indicates you are {pe_e}.")
             fig, ax = plt.subplots()
