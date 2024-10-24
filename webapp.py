@@ -104,7 +104,6 @@ def callback(frame):
         row = pose_row + face_row
         x = pd.DataFrame([row])
         body_language_class = model.predict(x)[0]  # first value of the predict array
-        msg = new_applicant.update_emotion(body_language_class.lower())
         y_max = int(max([landmark.y for landmark in results.face_landmarks.landmark]) * 480)
         y_min = int(min([landmark.y for landmark in results.face_landmarks.landmark]) * 480)
         x_max = int(max([landmark.x for landmark in results.face_landmarks.landmark]) * 640)
@@ -115,6 +114,7 @@ def callback(frame):
                     cv2.LINE_AA)
     with lock:
         job_applicant_container[body_language_class.lower()] += 1
+        msg = new_applicant.update_emotion(body_language_class.lower())
     return av.VideoFrame.from_ndarray(img, format="bgr24")
 
 st.header("Step 1: Pick Your Interviewer")
