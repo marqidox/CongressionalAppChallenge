@@ -136,15 +136,12 @@ with c4:
 
 st.header("Step 2: Fill out the Form")
 st.write("This is so we can generate a list of questions specific to the job you are applying to.")
-job_applicant_qs = ""
 with st.form("applicant_qna"):
     st.write("Please fill out the requested fields.")
     job = st.text_input("What job are you applying for? ex. software engineer")
     submitted = st.form_submit_button("Submit")
 if submitted:
-    cnt = generate_advice_for_applicant(job,2)
-    global job_applicant_qs
-    job_applicant_qs = cnt
+    job_applicant_qs = generate_advice_for_applicant(job,2)
         
 st.header("Step 3: Start Your Mock Interview")
 st.write("Answer the following questions while looking into the camera.")
@@ -159,9 +156,9 @@ with c2:
         st.image("hispanicwomeninterviewer1.jpg")
 with c3:
     try:
-        st.write(cnt)
+        st.write(job_applicant_qs)
     except:
-        pass
+        st.write("Questions loading...")
 
 try:        
     stutter = st.empty()
