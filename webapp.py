@@ -144,8 +144,7 @@ with st.form("applicant_qna"):
     submitted = st.form_submit_button("Submit")
 if submitted:
     cnt = generate_advice_for_applicant(job,2)
-    job_applicant_qs = cnt
-    global job_applicant_qs
+    global job_applicant_qs = cnt
         
 st.header("Step 3: Start Your Mock Interview")
 st.write("Answer the following questions while looking into the camera.")
