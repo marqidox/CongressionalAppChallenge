@@ -103,6 +103,7 @@ def callback(frame):
         row = pose_row + face_row
         x = pd.DataFrame([row])
         body_language_class = model.predict(x)[0]  # first value of the predict array
+        global msg
         msg = new_applicant.update_emotion(body_language_class.lower())
         y_max = int(max([landmark.y for landmark in results.face_landmarks.landmark]) * 480)
         y_min = int(min([landmark.y for landmark in results.face_landmarks.landmark]) * 480)
@@ -114,7 +115,6 @@ def callback(frame):
                     cv2.LINE_AA)
         cv2.rectangle(img, (0, 0), (0 + len(msg) * 15 + 7, 35), (0, 0, 0), -1)
         cv2.rectangle(img, (2, 2), (0 + len(msg) * 15 + 5, 33), (255, 255, 255), -1)
-        cv2.putText(img, msg, (9, 25), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 1, cv2.LINE_AA)
     with lock:
         job_applicant_container[body_language_class.lower()] += 1
     return av.VideoFrame.from_ndarray(img, format="bgr24")
@@ -152,6 +152,7 @@ c1, c2, c3 = st.columns(3)
 with c1:
     ctx = webrtc_streamer(key="example", video_frame_callback=callback, rtc_configuration={
                     "iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]})
+    st.write(msg)
 with c2:
     if st.session_state.t1:
         st.image("blackmaninterviewer1.jpg")
