@@ -141,7 +141,7 @@ with st.form("applicant_qna"):
     job = st.text_input("What job are you applying for? ex. software engineer")
     submitted = st.form_submit_button("Submit")
 if submitted:
-    job_applicant_qs = generate_advice_for_applicant(job,2)
+    st.session_state["job_applicant_qs"] = generate_advice_for_applicant(job,2)
         
 st.header("Step 3: Start Your Mock Interview")
 st.write("Answer the following questions while looking into the camera.")
@@ -155,10 +155,7 @@ with c2:
     if st.session_state.t2:
         st.image("hispanicwomeninterviewer1.jpg")
 with c3:
-    try:
-        st.write(job_applicant_qs)
-    except:
-        st.write("Questions loading...")
+    st.write("Questions loading...")
 
 try:        
     stutter = st.empty()
@@ -170,7 +167,7 @@ try:
                 data = job_applicant_container
                 labels = list(data.keys())
                 counts = list(data.values())
-                qs = job_applicant_qs
+                qs = st.session_state["job_applicant_qs"]
                 msgs = msg
             with c3:
                 try:
