@@ -168,8 +168,8 @@ try:
                 labels = list(job_applicant_container.keys())
                 counts = list(job_applicant_container.values())
             with c3:
-                try:
-                    st.write(st.session_state["job_applicant_qs"])
+                st.write(st.session_state["job_applicant_qs"])
+    
             st.write(st.session_state["msg"])
             pe_e = max(data, key=data.get)
             st.write(f"Your body language mostly indicates you are {pe_e}.")
