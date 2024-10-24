@@ -130,10 +130,10 @@ def make_toggle_false():
         st.session_state.t1 = False
 with c3:
     st.image("https://raw.githubusercontent.com/marqidox/CongressionalAppChallenge/refs/heads/main2/blackmaninterviewer1.jpg?token=GHSAT0AAAAAACUR3HXT5D6DJ5CJ2F4TWHYYZY2T3HQ")
-    st.toggle("Black Male Interviewer", key="t1", on_change=make_toggle_false)
+    st.checkbox("Black Male Interviewer", key="t1", on_change=make_toggle_false)
 with c4:
     st.image("https://raw.githubusercontent.com/marqidox/CongressionalAppChallenge/refs/heads/main2/hispanicwomeninterviewer1.jpg?token=GHSAT0AAAAAACUR3HXSVZXCNOOF7YZTJBJSZY2UA3Q")
-    st.toggle("Hispanic Female Interviewer", key="t2", on_change=make_toggle_false)
+    st.checkbox("Hispanic Female Interviewer", key="t2", on_change=make_toggle_false)
 
 with st.form("applicant_qna"):
     st.write("Please fill out the requested fields.")
