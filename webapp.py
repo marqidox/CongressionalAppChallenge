@@ -48,7 +48,7 @@ def generate_advice_for_applicant(occupation, n, majority_emotion=""):
             url="https://openrouter.ai/api/v1/chat/completions",
             data=json.dumps({
                 "models": ["nousresearch/nous-capybara-7b", "mistralai/mistral-7b-instruct","huggingfaceh4/zephyr-7b-beta"],
-                "messages": [{"role": "user", "content": f"This job applicant is applying to be a {occupation}. Based on this, assuming the POV of a job interviewer, generate 3 questions they would ask. If and only if it is a technical role, please include technical questions (ex. software engineer, program something in python using conditionals) and if it is not, do not give suggestions for technical questions."}],
+                "messages": [{"role": "user", "content": f"This job applicant is applying to be a {occupation}. Based on this, assuming the POV of a job interviewer, generate ONLY 3 questions they would ask."}],
                 "route": 'fallback'
             }),
             headers={"Authorization": f"Bearer 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"}
