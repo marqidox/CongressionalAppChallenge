@@ -28,7 +28,7 @@ st.set_page_config(
 
 st.title("Job Interview Simulator")
 st.write("This tool will track your body language when responding to AI interviewer. This real-time feedback will train for the real thing.")
-st.image(use_column_width="always",image="https://github.com/marqidox/CongressionalAppChallenge/blob/1e3048e79e80403fbad6ccbd49f97188e5dee2f8/pexels-thisisengineering-3861969.jpg")
+st.image(use_column_width="always",image="https://raw.githubusercontent.com/marqidox/CongressionalAppChallenge/refs/heads/main2/pexels-thisisengineering-3861969.jpg?token=GHSAT0AAAAAACUR3HXSWD2FABE3KBD44UB6ZY2QTBA")
 st.header("Begin the Simulator Below")
 
 def generate_advice_for_applicant(occupation, n, majority_emotion=""):
