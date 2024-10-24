@@ -146,6 +146,9 @@ with st.form("applicant_qna"):
 
 st.header("Step 3: Start Your Mock Interview")
 st.write("Answer the following questions while looking into the camera.")
+ctx = webrtc_streamer(key="example", video_frame_callback=callback, rtc_configuration={
+                    "iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]
+                })
 video = st.empty()
 if submitted:
     cnt = generate_advice_for_applicant(job,2)
@@ -155,10 +158,7 @@ if submitted:
     with video.container():
         c1, c2, c3 = st.columns(3)
         with c1:
-            st.header("This is the mock interviewer.")
-            ctx = webrtc_streamer(key="example", video_frame_callback=callback, rtc_configuration={
-                    "iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]
-                })
+            
         with c2:
             if st.session_state.t1:
                 st.image("blackmaninterviewer1.jpg")
