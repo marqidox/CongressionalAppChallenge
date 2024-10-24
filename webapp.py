@@ -175,27 +175,29 @@ if submitted:
         with c3:
             st.write(cnt)
 
-        
-stutter = st.empty()
-while ctx.state.playing:
-    with lock:
-        st.session_state['finished'] = False
-    with stutter.container():
+try:        
+    stutter = st.empty()
+    while ctx.state.playing:
         with lock:
-            data = st.session_state['job_applicant_container']
-            labels = list(data.keys())
-            counts = list(data.values())
-            questions = st.session_state["job_applicant_qs"]
-        st.write(questions)
-        pe_e = max(data, key=data.get)
-        st.write(f"Your body language mostly indicates you are {pe_e}.")
-        fig, ax = plt.subplots()
-        ax.pie(counts, labels=labels, autopct='%.2f')
-        ax.axis('equal')
-        st.pyplot(fig)
-        with open("dump.txt", 'w') as file:
-            file.write(pe_e)
-        time.sleep(5)
+            st.session_state['finished'] = False
+        with stutter.container():
+            with lock:
+                data = st.session_state['job_applicant_container']
+                labels = list(data.keys())
+                counts = list(data.values())
+                questions = st.session_state["job_applicant_qs"]
+            st.write(questions)
+            pe_e = max(data, key=data.get)
+            st.write(f"Your body language mostly indicates you are {pe_e}.")
+            fig, ax = plt.subplots()
+            ax.pie(counts, labels=labels, autopct='%.2f')
+            ax.axis('equal')
+            st.pyplot(fig)
+            with open("dump.txt", 'w') as file:
+                file.write(pe_e)
+            time.sleep(5)
+except:
+    pass
         
 with open("dump.txt") as file:
     main_emotion = file.read()
