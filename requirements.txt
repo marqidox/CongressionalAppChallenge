@@ -44,7 +44,7 @@ packaging==23.2
 pandas==1.5.3
 pillow==10.2.0
 pip==23.2.1
-protobuf==3.15.2
+protobuf==4.25.3
 pyarrow==15.0.0
 pycparser==2.21
 pydeck==0.8.1b0
@@ -67,7 +67,7 @@ setuptools==68.2.0
 six==1.16.0
 smmap==5.0.1
 sounddevice==0.4.6
-streamlit==1.17.0
+streamlit==1.20.0
 streamlit-webrtc==0.44.1
 tenacity==8.2.3
 threadpoolctl==3.2.0
@@ -82,3 +82,4 @@ validators==0.22.0
 watchdog==3.0.0
 wheel==0.41.2
 zipp==3.17.0
+protobuf==3.15.2
