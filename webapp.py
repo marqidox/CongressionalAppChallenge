@@ -114,7 +114,6 @@ def callback(frame):
                     cv2.LINE_AA)
     with lock:
         job_applicant_container[body_language_class.lower()] += 1
-        st.session_state["msg"] = msg
     return av.VideoFrame.from_ndarray(img, format="bgr24")
 
 st.header("Step 1: Pick Your Interviewer")
